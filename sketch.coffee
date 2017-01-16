@@ -15,39 +15,59 @@ class Deltagare
 		@present = false
 
 class Button
-	constructor : (@text,@x,@y,@w,@h,@present=false,@col=-1) ->
-		@a=0
-		@b=0
-
-	draw : ->
-		if @b==0
-			t = @text
-		else
-			t = @text + " (#{@a} av #{@b})"
-		if @col==-1
-			#stroke 0
-			if @present
-				fill color(255)
-				rect @x,@y,@w,@h
-				fill color(0)
-				text t,@x,@y
-			else
-				fill color(0)
-				rect @x,@y,@w,@h
-				fill color(255)
-				text t,@x,@y
-		else
-			fill colors[@col][1]
-			rect @x,@y,@w,@h
-			fill colors[@col][0]
-			text t,@x,@y
 	pressed : (x,y) ->
 		x = x + @w/2
 		y = y + @h/2
 		@x < x < @x+@w and @y < y < @y+@h
 
+class PersonButton extends Button
+	constructor : (@text,@x,@y,@w,@h,@col,@present) ->
+	draw : ->
+		if @present
+			stroke colors[@col][0] 
+			strokeWeight 3
+		else
+			noStroke()
+			strokeWeight 1
+		fill colors[@col][1]
+		rect @x,@y,@w,@h
+
+		fill colors[@col][0]
+		noStroke()
+		textAlign LEFT,CENTER
+		text @text,5+@x-@w/2,@y
+
+class RoomButton extends Button
+	constructor : (@text,@x,@y,@w,@h,@col) ->
+		@a=0
+		@b=0
+
+	draw : ->
+		noStroke()
+		strokeWeight 1
+		fill colors[@col][1]
+		rect @x,@y,@w,@h
+
+		fill colors[@col][0]
+		noStroke()
+		textAlign LEFT,CENTER
+		text @text,5+@x-@w/2,@y
+		textAlign RIGHT,CENTER
+		text "#{@a} av #{@b}",-5+@x+@w/2,@y
+
+class DayButton extends Button
+	constructor : (@text,@x,@y,@w,@h) ->
+
+	draw : ->
+		fill color(255)
+		rect @x,@y,@w,@h
+		fill color(0)
+		textAlign CENTER,CENTER
+		text @text,@x,@y
+
 setup = () ->
-	createCanvas 600,660
+	createCanvas 630,660
+	rooms = _.sortBy rooms
 	noStroke()
 	rectMode CENTER
 	textSize 14
@@ -63,9 +83,9 @@ setup = () ->
 	colors.push [color(0), color(192)]
 	colors.push [color(255), color(64)]
 	for i in range 31
-		buttons.push new Button i+1, 30 + 60*(i%3), 30 + 60*(int(i/3)), 50,50
-	for room,i in _.sortBy(rooms)
-		buttons.push new Button room, 350, 30 + 60*i, 300,50,false,i
+		buttons.push new DayButton i+1, 30 + 60*(i%3), 30 + 60*(int(i/3)), 50,50
+	for room,i in rooms
+		buttons.push new RoomButton room, 350, 30 + 60*i, 300,50,i
 	for name in _.sortBy(namn.split('\n'))
 		room = _.sample(rooms)
 		deltagare[name] = new Deltagare(name, room, _.random(1,31))
@@ -92,7 +112,10 @@ mousePressed = () ->
 				for key,delt of deltagare
 					if delt.rum == filter or delt.dag == filter
 						i = persons.length
-						persons.push new Button delt.namn,60+155*(i%4),30+60*int(i/4),150,50, delt.present
+						col = rooms.indexOf delt.rum
+						print delt.rum,col
+						button = new PersonButton delt.namn,80+155*(i%4),30+60*int(i/4),150,50, col, delt.present
+						persons.push button
 	else
 		state = 0
 		for person in persons
