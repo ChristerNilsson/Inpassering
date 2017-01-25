@@ -1,10 +1,10 @@
 # Inpassering
 
 Inpassering
-# Klicka på förnamnets initial
-# Klicka på personen
+* Klicka på förnamnets initial
+* Klicka på personen
 
 Utpassering
-# Klicka på förnamnets initial
-# Klicka på personen
+* Klicka på förnamnets initial
+* Klicka på personen
  
