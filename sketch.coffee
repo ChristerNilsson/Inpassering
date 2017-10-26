@@ -4,7 +4,7 @@
 # Toggla deltagare
 
 buttons = []
-rooms = ['Scratch 1','Scratch 2','Python 1','Python 2','Matematik 1','Matematik 2','Coffeescript','Javascript','Unity','Cobol']
+rooms = ['Scratch 1','Scratch 2','Python 1','Python 2','Matematik och spelprogrammering','3D-grafik och modellering i Maya','Eget projekt']
 colors = []
 deltagare = {}
 persons = []
@@ -113,7 +113,6 @@ mousePressed = () ->
 					if delt.rum == filter or delt.dag == filter
 						i = persons.length
 						col = rooms.indexOf delt.rum
-						print delt.rum,col
 						button = new PersonButton delt.namn,80+155*(i%4),30+60*int(i/4),150,50, col, delt.present
 						persons.push button
 	else
