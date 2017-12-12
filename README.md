@@ -1,12 +1,12 @@
 # Inpassering
 
 Inpassering
-* Klicka på förnamnets initial
-* Klicka på personen
+* Klicka på födelsedag
+* Klicka på person
 
 Följ ballongerna i samma färg till rätt lokal.
 
 Utpassering
-* Klicka på förnamnets initial
-* Klicka på personen
+* Klicka på födelsedag
+* Klicka på person
  
